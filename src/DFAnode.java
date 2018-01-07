@@ -11,23 +11,29 @@ class Source {
 }
 
 public class DFAnode {
+    char num;
     ArrayList<Source> sonnode;//可存在多个儿子
     ArrayList<Statement> statements;//一个节点内存的语句;
 
     public DFAnode() {
+
         sonnode = new ArrayList<>();
         statements = new ArrayList<>();
     }
 
     public void closure(Grammar grammar) {//节点内容的自我扩充,需要文法
-        String trans = statements.get(0).transform;//第一个句子;
-        int location = trans.indexOf("·");//返回点的位置;
-        int size = trans.length();
-        ArrayList<Statement> temp = grammar.Statements;
-        if (location < size - 1) {//不是在末尾
-            for (Statement s : temp) {
-                if (s.Vn == trans.charAt(location + 1))//把以点之后的第一个节点开头的产生式加入
-                    statements.add(s);
+        //String trans = statements.get(0).transform;//第一个句子;
+        for(int i=0;i<statements.size();i++) {
+            String trans = statements.get(i).transform;
+            int location = trans.indexOf("·");//返回点的位置;
+            int size = trans.length();
+            ArrayList<Statement> temp = grammar.Statements;
+            if (location < size - 1) {//不是在末尾
+                for (Statement s : temp) {
+                    if (s.Vn == trans.charAt(location + 1)) {//把以点之后的第一个节点开头的产生式加入
+                        statements.add(s);
+                    }
+                }
             }
         }
     }//自我填充完成。
@@ -66,8 +72,8 @@ public class DFAnode {
             System.out.print(s.Vn+"→");
             System.out.println(s.transform);
         }
-        for(Source s:sonnode)
-        System.out.println(s.way);
+        //for(Source s:sonnode)
+        //System.out.println(s.way);
     }
 
 }
